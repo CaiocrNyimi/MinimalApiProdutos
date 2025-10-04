@@ -3,7 +3,7 @@
 Este projeto é uma **Minimal API em .NET** desenvolvida para realizar deploy na nuvem com Microsoft Azure. Ele realiza o gerenciamento de categorias e produtos, com persistência em banco de dados Azure SQL e deploy automatizado via Azure CLI e Docker.
 
 ## 📁 Estrutura do Repositório
-
+```
 MinimalApiProdutos/
 ├── Data/
 │ └── AppDbContext.cs
@@ -16,6 +16,7 @@ MinimalApiProdutos/
 │ └── ddl_dimdim.sql
 ├── README.md
 └── .dockerignore / Dockerfile / .gitignore
+```
 
 ## 🗃️ Script de Banco — DDL das Tabelas
 
