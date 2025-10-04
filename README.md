@@ -130,6 +130,7 @@ Depois:
 ```bash
 az group create --name meu-grupo-de-recursos --location brazilsouth
 ```
+---
 
 1. Fazer Login no Azure CLI:
 ```bash
