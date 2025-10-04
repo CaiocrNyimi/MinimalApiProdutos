@@ -221,5 +221,6 @@ requests
 
 
 11. Acessar Swagger:
-
+```
 http://<IP-DA-VM>/swagger
+```
