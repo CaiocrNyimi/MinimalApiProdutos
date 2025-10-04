@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MinimalApiProdutos</name>
+    </assembly>
+    <members>
+        <member name="T:MinimalApiProdutos.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:MinimalApiProdutos.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MinimalApiProdutos.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MinimalApiProdutos.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:MinimalApiProdutos.Models.Categoria">
+            <summary>
+            Representa uma categoria de produtos.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Categoria.Id">
+            <summary>
+            Identificador único da categoria.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Categoria.Nome">
+            <summary>
+            Nome da categoria. Obrigatório e limitado a 100 caracteres.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Categoria.Produtos">
+            <summary>
+            Lista de produtos associados a esta categoria.
+            </summary>
+        </member>
+        <member name="T:MinimalApiProdutos.Models.Produto">
+            <summary>
+            Representa um produto disponível no sistema.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Produto.Id">
+            <summary>
+            Identificador único do produto.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Produto.Nome">
+            <summary>
+            Nome do produto. Obrigatório e limitado a 150 caracteres.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Produto.Preco">
+            <summary>
+            Preço do produto.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Produto.Estoque">
+            <summary>
+            Quantidade disponível em estoque.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Produto.CategoriaId">
+            <summary>
+            Identificador da categoria à qual o produto pertence.
+            </summary>
+        </member>
+        <member name="P:MinimalApiProdutos.Models.Produto.Categoria">
+            <summary>
+            Categoria associada ao produto.
+            </summary>
+        </member>
+    </members>
+</doc>

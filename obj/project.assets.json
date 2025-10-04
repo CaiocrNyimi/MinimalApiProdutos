@@ -337,6 +337,25 @@
           }
         }
       },
+      "Microsoft.AspNetCore.OpenApi/8.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.OpenApi": "1.4.3"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.WebUtilities/2.1.1": {
         "type": "package",
         "dependencies": {
@@ -2508,6 +2527,21 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.xml",
         "microsoft.aspnetcore.http.features.2.1.1.nupkg.sha512",
         "microsoft.aspnetcore.http.features.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.OpenApi/8.0.0": {
+      "sha512": "T4mwMvPSOYAp+KeQ4xO8H2rxpiOMJ9W/7yBBkUTMp96AHtGlPN4s7hbax2tM61LxTY775JKL4fiv5grn41EHXw==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.openapi/8.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net8.0/Microsoft.AspNetCore.OpenApi.dll",
+        "lib/net8.0/Microsoft.AspNetCore.OpenApi.xml",
+        "microsoft.aspnetcore.openapi.8.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.openapi.nuspec"
       ]
     },
     "Microsoft.AspNetCore.WebUtilities/2.1.1": {
@@ -5986,6 +6020,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "Microsoft.ApplicationInsights.AspNetCore >= 2.23.0",
+      "Microsoft.AspNetCore.OpenApi >= 8.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.9",
@@ -5993,23 +6028,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\labsfiap\\.nuget\\packages\\": {},
+    "C:\\Users\\caioc\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\labsfiap\\MinimalApiProdutos\\MinimalApiProdutos.csproj",
+      "projectUniqueName": "C:\\Users\\caioc\\Desktop\\MinimalApiProdutos\\MinimalApiProdutos.csproj",
       "projectName": "MinimalApiProdutos",
-      "projectPath": "C:\\Users\\labsfiap\\MinimalApiProdutos\\MinimalApiProdutos.csproj",
-      "packagesPath": "C:\\Users\\labsfiap\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\labsfiap\\MinimalApiProdutos\\obj\\",
+      "projectPath": "C:\\Users\\caioc\\Desktop\\MinimalApiProdutos\\MinimalApiProdutos.csproj",
+      "packagesPath": "C:\\Users\\caioc\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\caioc\\Desktop\\MinimalApiProdutos\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\labsfiap\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\caioc\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -6018,7 +6053,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -6046,6 +6080,10 @@
           "Microsoft.ApplicationInsights.AspNetCore": {
             "target": "Package",
             "version": "[2.23.0, )"
+          },
+          "Microsoft.AspNetCore.OpenApi": {
+            "target": "Package",
+            "version": "[8.0.0, )"
           },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -6087,7 +6125,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

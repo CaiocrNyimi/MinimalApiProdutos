@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using MinimalApiProdutos.Data;
 using MinimalApiProdutos.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,18 +14,18 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         connectionString,
-        sqlServerOptions => sqlServerOptions.EnableRetryOnFailure() 
+        sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()
     )
 );
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-        Title = "Minimal API Produtos e Categorias (FIAP)", 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Minimal API Produtos e Categorias (FIAP)",
         Description = "API CRUD Completo para Gerenciamento de Produtos e Categorias.",
-        Version = "v1" 
+        Version = "v1"
     });
 });
 
@@ -33,8 +35,6 @@ app.MigrateDatabase();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
-app.MapGet("/", () => "API de Produtos e Categorias com Minimal APIs!");
 
 app.MapGroup("/categorias")
     .WithTags("Categorias")
@@ -50,19 +50,17 @@ public static class MigrationManager
 {
     public static WebApplication MigrateDatabase(this WebApplication webApp)
     {
-        using (var scope = webApp.Services.CreateScope())
+        using var scope = webApp.Services.CreateScope();
+        var services = scope.ServiceProvider;
+        try
         {
-            var services = scope.ServiceProvider;
-            try
-            {
-                var db = services.GetRequiredService<AppDbContext>();
-                db.Database.Migrate(); 
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados.");
-            }
+            var db = services.GetRequiredService<AppDbContext>();
+            db.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados.");
         }
         return webApp;
     }
@@ -99,7 +97,7 @@ public static class CategoriaEndpoints
         })
         .Produces<List<Produto>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
-        
+
         group.MapPost("/", async (AppDbContext db, Categoria categoria) =>
         {
             db.Categorias.Add(categoria);
@@ -107,21 +105,55 @@ public static class CategoriaEndpoints
             return Results.Created($"/categorias/{categoria.Id}", categoria);
         })
         .Produces<Categoria>(StatusCodes.Status201Created)
-        .Accepts<Categoria>("application/json");
-        
+        .Accepts<Categoria>("application/json")
+        .WithOpenApi(op =>
+        {
+            op.RequestBody = new OpenApiRequestBody
+            {
+                Content =
+                {
+                    ["application/json"] = new OpenApiMediaType
+                    {
+                        Example = new OpenApiObject
+                        {
+                            ["nome"] = new OpenApiString("Eletrônicos")
+                        }
+                    }
+                }
+            };
+            return op;
+        });
+
         group.MapPut("/{id}", async (AppDbContext db, int id, Categoria categoriaRecebida) =>
         {
             var categoriaExistente = await db.Categorias.FindAsync(id);
             if (categoriaExistente == null) return Results.NotFound();
 
-            categoriaExistente.Nome = categoriaRecebida.Nome; 
+            categoriaExistente.Nome = categoriaRecebida.Nome;
 
             await db.SaveChangesAsync();
-            return Results.Ok(categoriaExistente); 
+            return Results.Ok(categoriaExistente);
         })
         .Produces<Categoria>(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status404NotFound);
-        
+        .Produces(StatusCodes.Status404NotFound)
+        .WithOpenApi(op =>
+        {
+            op.RequestBody = new OpenApiRequestBody
+            {
+                Content =
+                {
+                    ["application/json"] = new OpenApiMediaType
+                    {
+                        Example = new OpenApiObject
+                        {
+                            ["nome"] = new OpenApiString("Eletrônicos")
+                        }
+                    }
+                }
+            };
+            return op;
+        });
+
         group.MapDelete("/{id}", async (AppDbContext db, int id) =>
         {
             var categoria = await db.Categorias.FindAsync(id);
@@ -148,7 +180,7 @@ public static class ProdutoEndpoints
             return Results.Ok(await db.Produtos.Include(p => p.Categoria).ToListAsync());
         })
         .Produces<List<Produto>>(StatusCodes.Status200OK);
-        
+
         group.MapGet("/{id}", async (AppDbContext db, int id) =>
         {
             var produto = await db.Produtos.Include(p => p.Categoria).FirstOrDefaultAsync(p => p.Id == id);
@@ -168,21 +200,41 @@ public static class ProdutoEndpoints
 
             db.Produtos.Add(produto);
             await db.SaveChangesAsync();
-            
+
             logger.LogInformation("Produto criado: {Nome}", produto.Nome);
 
             return Results.Created($"/produtos/{produto.Id}", produto);
         })
         .Produces<Produto>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest)
-        .Accepts<Produto>("application/json");
-        
+        .Accepts<Produto>("application/json")
+        .WithOpenApi(op =>
+        {
+            op.RequestBody = new OpenApiRequestBody
+            {
+                Content =
+                {
+                    ["application/json"] = new OpenApiMediaType
+                    {
+                        Example = new OpenApiObject
+                        {
+                            ["nome"] = new OpenApiString("IPhone 6 Pro Max"),
+                            ["preco"] = new OpenApiDouble(499.99),
+                            ["estoque"] = new OpenApiInteger(10),
+                            ["categoriaId"] = new OpenApiInteger(1)
+                        }
+                    }
+                }
+            };
+            return op;
+        });
+
         group.MapPut("/{id}", async (AppDbContext db, int id, Produto produtoRecebido) =>
         {
             var produtoExistente = await db.Produtos.FindAsync(id);
             if (produtoExistente == null) return Results.NotFound();
-            
-            if (!await db.Categorias.AnyAsync(c => c.Id == produtoRecebido.CategoriaId)) 
+
+            if (!await db.Categorias.AnyAsync(c => c.Id == produtoRecebido.CategoriaId))
                 return Results.BadRequest("CategoriaId inválida.");
 
             produtoExistente.Nome = produtoRecebido.Nome;
@@ -191,12 +243,32 @@ public static class ProdutoEndpoints
             produtoExistente.CategoriaId = produtoRecebido.CategoriaId;
 
             await db.SaveChangesAsync();
-            return Results.Ok(produtoExistente); 
+            return Results.Ok(produtoExistente);
         })
         .Produces<Produto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
-        .Produces(StatusCodes.Status400BadRequest);
-        
+        .Produces(StatusCodes.Status400BadRequest)
+        .WithOpenApi(op =>
+        {
+            op.RequestBody = new OpenApiRequestBody
+            {
+                Content =
+                {
+                    ["application/json"] = new OpenApiMediaType
+                    {
+                        Example = new OpenApiObject
+                        {
+                            ["nome"] = new OpenApiString("IPhone 6 Pro Max"),
+                            ["preco"] = new OpenApiDouble(499.99),
+                            ["estoque"] = new OpenApiInteger(10),
+                            ["categoriaId"] = new OpenApiInteger(1)
+                        }
+                    }
+                }
+            };
+            return op;
+        });
+
         group.MapDelete("/{id}", async (AppDbContext db, int id) =>
         {
             var produto = await db.Produtos.FindAsync(id);
