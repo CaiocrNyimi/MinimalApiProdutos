@@ -36,13 +36,6 @@ az sql db create `
 az sql server firewall-rule create `
     --resource-group $RG_NAME `
     --server $SQL_SERVER_NAME `
-    --name AllowAllWindowsAzure `
-    --start-ip-address 0.0.0.0 `
-    --end-ip-address 0.0.0.0
-
-az sql server firewall-rule create `
-    --resource-group $RG_NAME `
-    --server $SQL_SERVER_NAME `
     --name AllowMyPersonalIP `
     --start-ip-address $PUBLIC_IP `
     --end-ip-address $PUBLIC_IP
